@@ -1,0 +1,109 @@
+project_name: "CD-LPL-Discovery"
+
+llm:
+  provider: "openai" # Options: "openai", "gemini"
+  
+  openai:
+    model_name: "Gemini-3-Pro"
+    temperature: 0.1
+    base_url: "https://api.poe.com/v1"
+    
+  gemini:
+    model_name: "gemini-3-pro-preview"
+    temperature: 0.1
+    # thinking_level: "high" # Optional: "low", "high" 
+    media_resolution: "media_resolution_high" # Optional: "media_resolution_low", "media_resolution_medium", "media_resolution_high"
+    # api_key should be set in env as GEMINI_API_KEY 
+
+# Output path configuration
+output:
+  base_dir: "experiments" # Root directory for all experiment results
+  run_dir_format: "%Y-%m-%d_%H-%M-%S" # Subdirectory format for each run
+
+# Data file paths (relative to project root)
+data_paths:
+  # Feature importance files
+  life_importance: "data/Life_feature_importance.csv"
+  em_importance:   "data/EM_feature_importance.csv"
+  
+  # SHAP plots
+  life_shap: "data/Life_shap_summary_plot.png"
+  em_shap:   "data/EM_shap_summary_plot.png"
+  
+  # Experiment records (raw data table)
+  experiments: "data/Carbon_Dot_Data_Collection.xlsx"
+  
+  # Training dataset
+  training_em: "data/Total_data_em.xlsx"
+  training_life: "data/Total_data_life.xlsx"
+  
+  # SMILES raw data
+  smiles_raw: "data/SMILES_Modeling_Data.xlsx"
+  cid_smiles: "data/CID-SMILES"
+
+# Model file paths
+model_paths:
+  em_model: "data/models/trained_em_model.pkl"
+  life_model: "data/models/trained_life_model.pkl"
+
+# Agent settings
+agents:
+  planner:
+    max_retries: 3
+    molecule_search_limit: 60000
+    molecule_max_mw: 500
+
+# Critic Agent review model configuration
+# Each judge can independently configure API provider (Poe, official OpenAI, official Gemini, etc.)
+# api_key_env: Environment variable name, read from secrets.env
+# base_url: API endpoint (leave blank to use official default endpoint)
+critic:
+  judges:
+    - name: "Gemini-3-Pro"
+      provider: "openai"  # Use OpenAI compatible interface
+      model: "Gemini-3-Pro"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
+      
+    - name: "gpt-5.2"
+      provider: "openai"
+      model: "gpt-5.2"
+      api_key_env: "OPENAI_API_KEY"  
+      base_url: "https://api.poe.com/v1"  
+      temperature: 0.1
+      
+    - name: "claude-opus-4.5"
+      provider: "openai"  # Anthropic can also be accessed via OpenAI compatible interface
+      model: "claude-opus-4.5"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
+      
+    - name: "grok-4.1-fast-reasoning"
+      provider: "openai"
+      model: "grok-4.1-fast-reasoning"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
+      
+    - name: "kimi-k2-t"
+      provider: "openai"
+      model: "kimi-k2-t"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
+      
+    - name: "qwen3-max-n"
+      provider: "openai"
+      model: "qwen3-max-n"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
+      
+    - name: "deepseek-v3.2"
+      provider: "openai"
+      model: "deepseek-v3.2"
+      api_key_env: "OPENAI_API_KEY"
+      base_url: "https://api.poe.com/v1"
+      temperature: 0.1
